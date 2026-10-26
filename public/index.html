@@ -310,7 +310,7 @@ nav a:focus-visible { text-decoration: underline; text-underline-offset: 4px; }
   const W = buildLake(R, N, fbmOf(N));
   renderer.setClearColor(W.clear);
   const P = { x: W.spawn.x, z: W.spawn.z, yaw: W.spawn.yaw, pitch: -.04, bob: 0 };
-  const S = { stillFor: 0, idle: 0, walked: false };
+  const S = { idle: 0 };
 
   // ---------- input ----------
   const keys = {};
@@ -333,7 +333,6 @@ nav a:focus-visible { text-decoration: underline; text-underline-offset: 4px; }
   addEventListener('pointerup', endDrag); addEventListener('pointercancel', endDrag);
 
   // ---------- loop ----------
-  const TEXT_BACK = 3.5; // seconds standing still before the card drifts back
   function collide() {
     W.obstacles.forEach(o => {
       const dx = P.x - o.x, dz = P.z - o.z, d = Math.hypot(dx, dz), m = o.r + .5;
@@ -354,10 +353,10 @@ nav a:focus-visible { text-decoration: underline; text-underline-offset: 4px; }
       collide();
       const rad = Math.hypot(P.x, P.z); if (rad > 185) { P.x *= 185 / rad; P.z *= 185 / rad; }
       P.bob += dt * (keys.shift ? 11 : 7);
-      S.stillFor = 0; S.idle = 0; S.walked = true;
-    } else { S.stillFor += dt; S.idle += dt; }
+      S.idle = 0;
+    } else S.idle += dt;
     if (!reduceMotion && S.idle > 8) P.yaw += dt * .025 * Math.min(1, (S.idle - 8) / 4);
-    const away = S.walked && S.stillFor < TEXT_BACK;
+    const away = !!(f || s);
     cardEl.classList.toggle('gone', away);
     hintEl.classList.toggle('gone', away);
     camera.position.set(P.x, W.height(P.x, P.z) + W.eye + Math.sin(P.bob) * .06, P.z);
