@@ -1,12 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" shape-rendering="crispEdges">
   <rect width="16" height="16" fill="#3b2c4a"/>
-  <rect y="5" width="16" height="3" fill="#8a5a74"/>
-  <rect y="7" width="16" height="2" fill="#e3a07e"/>
-  <rect x="6" y="6" width="4" height="2" fill="#ffd9a0"/>
-  <path d="M0 9h3V6h1v-1h1v1h1v3h10v7H0z" fill="#5a3f55"/>
-  <rect y="10" width="16" height="3" fill="#6a4a72"/>
-  <rect x="7" y="10" width="2" height="4" fill="#7a5236"/>
-  <rect y="13" width="16" height="3" fill="#2f3a26"/>
-  <rect x="12" y="4" width="1" height="1" fill="#fff1dc"/>
-  <rect x="3" y="2" width="1" height="1" fill="#fff1dc"/>
+  <rect y="5" width="16" height="4" fill="#8a5a74"/>
+  <path d="M5 9V7h1V6h1V5h2v1h1v1h1v2z" fill="#ffc27a"/>
+  <rect y="9" width="16" height="7" fill="#2a1d26"/>
+  <rect x="4" y="10" width="8" height="1" fill="#e3a07e"/>
+  <rect x="5" y="12" width="6" height="1" fill="#e3a07e"/>
+  <rect x="7" y="14" width="2" height="1" fill="#e3a07e"/>
 </svg>
