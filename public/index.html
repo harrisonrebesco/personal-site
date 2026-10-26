@@ -342,21 +342,22 @@ nav a:focus-visible { text-decoration: underline; text-underline-offset: 4px; }
   let last = performance.now();
   function tick(now) {
     const dt = Math.min(.05, (now - last) / 1000), t = now / 1000; last = now;
-    let f = 0, s = 0;
-    if (keys.w || keys.arrowup) f++; if (keys.s || keys.arrowdown) f--; if (keys.a || keys.arrowleft) s--; if (keys.d || keys.arrowright) s++;
+    let f = 0, turn = 0;
+    if (keys.w || keys.arrowup) f++; if (keys.s || keys.arrowdown) f--; if (keys.a || keys.arrowleft) turn++; if (keys.d || keys.arrowright) turn--;
     if (drag.on && drag.touch && drag.moved < 12 && now - drag.t > 250) drag.walk = true;
     if (drag.walk) f = 1;
-    if (f || s) {
-      const sp = (keys.shift ? 11 : 4.5) * dt, len = Math.hypot(f, s);
-      const nx = P.x + (-Math.sin(P.yaw) * f + Math.cos(P.yaw) * s) / len * sp, nz = P.z + (-Math.cos(P.yaw) * f - Math.sin(P.yaw) * s) / len * sp;
+    if (turn) P.yaw += turn * 1.8 * dt;
+    if (f) {
+      const sp = (keys.shift ? 11 : 4.5) * dt;
+      const nx = P.x - Math.sin(P.yaw) * f * sp, nz = P.z - Math.cos(P.yaw) * f * sp;
       if (W.walkable(nx, nz)) { P.x = nx; P.z = nz; } else if (W.walkable(nx, P.z)) P.x = nx; else if (W.walkable(P.x, nz)) P.z = nz;
       collide();
       const rad = Math.hypot(P.x, P.z); if (rad > 185) { P.x *= 185 / rad; P.z *= 185 / rad; }
       P.bob += dt * (keys.shift ? 11 : 7);
-      S.idle = 0;
-    } else S.idle += dt;
+    }
+    const away = !!(f || turn);
+    S.idle = away ? 0 : S.idle + dt;
     if (!reduceMotion && S.idle > 8) P.yaw += dt * .025 * Math.min(1, (S.idle - 8) / 4);
-    const away = !!(f || s);
     cardEl.classList.toggle('gone', away);
     hintEl.classList.toggle('gone', away);
     camera.position.set(P.x, W.height(P.x, P.z) + W.eye + Math.sin(P.bob) * .06, P.z);
